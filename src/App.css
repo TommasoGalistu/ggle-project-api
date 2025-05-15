@@ -1,0 +1,208 @@
+header{
+    
+    
+    nav{
+        background-color: rgb(255, 124, 124);
+        height: 100%;
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        ul{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            list-style: none;
+            li{
+                
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        .upperHeader{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            
+            img{
+                cursor: pointer;
+            }
+        }
+        
+        .bottomHeader{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgb(215, 215, 215);
+            input{
+                flex-grow: 1;
+                border: none;
+                height: 100%;
+                padding: 1rem;
+                padding-left: 0;
+            }
+        }
+        .contMenuBottomResNoRes{
+            padding: 1rem;
+        }
+        
+       
+
+        
+    }
+
+    .contImgJambo{
+        width: 100%;
+        height: 9rem;
+        background-color: yellow;
+    }
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    background-color: grey;
+    section{
+        margin-top: 2rem;
+    }
+
+    .sectionSponsor{
+        display: flex;
+        flex-direction: row;
+    }
+    
+   
+    .contLogin,
+    .contRegister{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+        form{
+            display: flex;
+            flex-direction: column;
+            margin: 2rem;
+            label{
+                margin-top: 1rem;
+            }
+        }
+
+    }
+    
+    .contCalendar{
+        display: flex;
+        /* gap: 1rem;
+        min-height: 40rem; */
+        
+        .bookingHour{
+            position: absolute;
+            right: 0;
+            z-index: 10;
+            background-color: white;
+            height: 100%;
+            padding: 1rem;
+            
+            overflow: hidden;
+            max-width: 0;
+            opacity: 0;
+            transition: max-height 300ms ease, opacity 300ms ease;
+            
+        }
+        .bookingHour.open{
+            
+            min-width: 40%; 
+            opacity: 1;
+        }
+    }
+    .calendar{
+        /* height: 1rem;
+        width: 1rem; */
+        position: relative;
+    }
+    .calendar-wrapper{
+                width: 100%;
+                /* max-width: 900px; */
+                height: 700px; /* o 'auto' */
+                margin: 0 auto;
+                background-color: red;
+    }
+    .fc-daygrid-day-frame {
+        /* min-height: 100px;
+        max-height: 15px; */
+        cursor: pointer;
+    }
+    .selected-cell{
+        background-color: red;
+    }
+    /* .fc-button-group{ */
+        /* contenitori dei bottoni */
+         /* font-size: 0.7rem;  */
+
+    /* } */
+    
+    /* .fc .fc-toolbar-title {
+        /* Dimensione del titolo */
+        /* font-size: 1rem;
+    }
+
+    .fc-daygrid-day-number {
+        /* Dimensione numeri dei giorni */
+        /* font-size: 1rem;
+    }
+    .selected-cell{
+        background-color: red !important; 
+        
+    }  */ 
+}
+
+footer{
+    background-color: blue;
+    
+}
+
+.loadingPage{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: aliceblue;
+    z-index: 100;
+}
+
+@media screen and (max-width: 1000px) {
+    /* quando è più piccolo di mille */
+ .menuNoResponsive{
+    display: none;
+ }
+ .contMenuBottomResNoRes{
+    display: none;
+ }
+ 
+}
+@media screen and (max-width: 700px) {
+    /* quando è più piccolo di 700 */
+ main{
+    .sectionSponsor{
+        flex-direction: column;
+    }
+ }
+ 
+}
+@media screen and (min-width: 1000px) {
+ /* quando è più grande di 1000 */
+ .contMenuBottomRes{
+    display: none;
+ }
+ .bottomHeader{
+    border: 1px solid rgb(255, 255, 255);
+ }
+ 
+}
