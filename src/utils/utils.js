@@ -74,3 +74,36 @@ export function getHourAndMinute(dateString) {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
 }
+
+// controlla che il form non sia vuoto
+export function getFormValuesAndCheck(formArray) {
+  const values = {};
+  const checkedRadios = new Set();
+  
+  for (let i = 0; i < formArray.length; i++) {
+    const el = formArray[i];
+    const name = el.name;
+
+    if (!name || el.disabled || el.localName === 'button') continue;
+
+    if (el.type === 'radio') {
+      if (checkedRadios.has(name)) continue; // già gestito questo gruppo
+      const selected = [...formArray].find(e => e.name === name && e.checked);
+      if (!selected) return { valid: false, values: null };
+      values[name] = selected.value;
+      checkedRadios.add(name);
+    } else if (el.type === 'checkbox') {
+      // checkbox multipli con lo stesso name: raccogli tutti quelli spuntati
+      if (!values[name]) values[name] = [];
+      if (el.checked) {
+        values[name].push(el.value);
+      }
+    } else {
+      if (el.value.trim() === '') return { valid: false, values: null };
+      values[name] = el.value.trim();
+    }
+  }
+
+  return { valid: true, values };
+}
+

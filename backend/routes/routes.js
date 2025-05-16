@@ -28,6 +28,8 @@ publicRouter.get('/get-users', userController.getUsers);
 publicRouter.get('/get-users/:id', userController.getUser);
 publicRouter.post('/auth-ggle', userController.authGggle);
 publicRouter.get('/calendar-user/:id', userController.getAdminCalendarEvents);
+// da finire
+// publicRouter.get('/calendar-user/:id/add-event', userController.getAdminCalendarEvents);
 
 //router api indipendenti
 publicRouter.get('/oauth2callback', userController.googleCallback);

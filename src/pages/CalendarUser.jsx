@@ -18,7 +18,7 @@ function CalendarUser(){
 
     useEffect(()=>{
         getCalendarUser()
-    },[])
+    },[urlCalendarUser, id])
 
     async function getCalendarUser() {
         try{
@@ -50,9 +50,12 @@ function CalendarUser(){
     function createEvent(dateCalendar){
         setOpen(openOld => !openOld)
         console.log('datecalendar ',dateCalendar)
+        
         setData(dateCalendar)
         
     }
+
+   
     
     
     
@@ -64,7 +67,7 @@ function CalendarUser(){
                     
                 </div>
                 <div className={`bookingHour ${open ? "open" : ""}`}>
-                    {(date)  && <FormEvent date={date} events={events} service={services[0]}></FormEvent>}
+                    {(date)  && <FormEvent date={date} events={events} service={services} ></FormEvent>}
                 </div>
 
             </div>
