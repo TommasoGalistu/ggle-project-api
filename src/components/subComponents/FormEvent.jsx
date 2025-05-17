@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { catchDateISO, getFormValuesAndCheck, getHourAndMinute, getTimezoneOffsetFormatted, invertDataString } from "../../utils/utils"
+import { ContextData } from "../../data/context"
+import { useFetchWithLoading } from "../../utils/hook"
+import { useParams } from "react-router-dom"
 
 function FormEvent({date, events, workHour = ['T09:00:00.000', 'T18:00:00.000'], service}){
     const [hourSelect, setHourSelect] = useState(null)
@@ -16,6 +19,9 @@ function FormEvent({date, events, workHour = ['T09:00:00.000', 'T18:00:00.000'],
     const dateVisible = invertDataString(date, '-');
     
     const eventsFilter = filterEvent(events)
+    const {urlCalendarUser} = useContext(ContextData)
+    const fetchData = useFetchWithLoading();
+    const { id } = useParams();
     
 
     useEffect(() =>{
@@ -109,7 +115,7 @@ function FormEvent({date, events, workHour = ['T09:00:00.000', 'T18:00:00.000'],
     
     
     // let selectOption = events
-    function sendRequest(e){
+    function prepareData(e){
         e.preventDefault()
         if(endEvent == null){
             setError(old => ['Compila i campi richiesti'])
@@ -125,19 +131,38 @@ function FormEvent({date, events, workHour = ['T09:00:00.000', 'T18:00:00.000'],
         }
         console.log(isFullOfDataEl.values)
         const data = {
-            title: `${isFullOfDataEl.values.type_service} - ${isFullOfDataEl.values.name_client}`,
-            start: isFullOfDataEl.values.hour_start,
-            end: endEvent
+            title: `${isFullOfDataEl.values.type_sevice} - ${isFullOfDataEl.values.name_client}`,
+            start: `${date}T${isFullOfDataEl.values.hour_start}`,
+            end: `${date}T${endEvent}`
         }
+
+        sendDataCalendar(data)
         
     }
+
+    async function sendDataCalendar(data){
+        try{
+            const res = await fetchData(`${urlCalendarUser}/${id}/${import.meta.env.VITE_ADD_EVENT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+    
+            console.log(res)
+
+        }catch(e){
+            console.log(e)
+        }
+    }   
     
 
 
     return (
         <>
             {dateVisible && <spam>Data selezionata: {dateVisible}</spam>}
-                    <form ref={refForm} onSubmit={sendRequest}>
+                    <form ref={refForm} onSubmit={prepareData}>
                         <label htmlFor="name_client">Inserisci il nome del cliente</label><br />
                         <input type="text" name="name_client" placeholder="Nome cliente"/><br />
 

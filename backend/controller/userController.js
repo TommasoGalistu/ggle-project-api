@@ -213,6 +213,51 @@ const userController = {
             console.error("Errore recuperando eventi calendario:", error);
             return res.status(500).json({ error: "Errore interno nel recupero eventi" });
         }
+    },
+    addEventToCalendar: async (req, res) =>{
+        const { id } = req.params;
+        const { title, start, end } = req.body;
+        console.log(id, title, start, end)
+        try {
+            const user = await User.findById(id);
+            if (!user || !user.refresh_token) {
+                return res.status(404).json({ error: "Utente o refresh token non trovato" });
+            }
+
+            const oauth2Client = new google.auth.OAuth2(
+                process.env.GOOGLE_CLIENT_ID,
+                process.env.GOOGLE_CLIENT_SECRET,
+                process.env.GOOGLE_REDIRECT_URI
+            );
+
+            const refresh_token = decrypt(user.refresh_token);
+            oauth2Client.setCredentials({ refresh_token });
+
+            const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+
+            const event = {
+                summary: title,
+                start: {
+                    dateTime: new Date(`${start}`).toISOString(),
+                    timeZone: "Europe/Rome", // modifica in base al tuo fuso
+                },
+                end: {
+                    dateTime: new Date(`${end}`).toISOString(),
+                    timeZone: "Europe/Rome",
+                },
+            };
+
+            const response = await calendar.events.insert({
+                calendarId: "primary",
+                resource: event,
+            });
+
+            res.status(200).json({ message: "Evento creato con successo", data: response.data });
+
+        } catch (error) {
+            console.error("Errore inserendo evento:", error);
+            res.status(500).json({ error: "Errore durante l'inserimento dell'evento" });
+        }
     }
 
 }
